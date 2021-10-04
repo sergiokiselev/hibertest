@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: hibertest
+  datasource:
+    url: jdbc:h2:mem:clm-quote-service;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    hikari:
+      minimumIdle: 1
+      maximumPoolSize: 5
+      idleTimeout: 10000
+      maxLifetime: 10000
+      connection-timeout: 60000
+  jpa:
+    base-package: test.hiber.model
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        cache:
+          use_second_level_cache: false
+    hibernate:
+      ddl-auto: none
+      use-new-id-generator-mappings: true
+      search:
+        default:
+          indexing_strategy: manual
+          autoregister_listeners: false
