@@ -1,16 +1,24 @@
 package test.hiber.model
 
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import org.hibernate.annotations.Immutable
+import java.math.BigDecimal
+import java.math.BigDecimal.ZERO
+import javax.persistence.*
+import javax.persistence.FetchType.LAZY
 
 @Entity
-class Bid(
-
-) {
+@Immutable
+@JsonIgnoreProperties(ignoreUnknown = true)
+@SequenceGenerator(name = "sequence", sequenceName = "seq_bids", allocationSize = 1)
+data class Bid(
     @Id
-    var id: Long = TODO("initialize me")
+    @GeneratedValue(generator = "sequence", strategy = GenerationType.SEQUENCE)
+    var id: Long = 0
+) {
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     var item: Item? = null
+
+    var bidValue: BigDecimal = ZERO
 }

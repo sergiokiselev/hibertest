@@ -1,21 +1,23 @@
 package test.hiber.model
 
-import java.lang.IllegalStateException
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.time.LocalDateTime
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.OneToMany
+import javax.persistence.*
+import javax.persistence.CascadeType.PERSIST
 import javax.validation.constraints.Future
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
 @Entity
-class Item {
-
+@JsonIgnoreProperties(ignoreUnknown = true)
+@SequenceGenerator(name = "sequence", sequenceName = "seq_items", allocationSize = 1)
+data class Item(
     @Id
-    var id: Long = TODO("initialize me")
+    @GeneratedValue(generator = "sequence", strategy = GenerationType.SEQUENCE)
+    var id: Long = 0
+) {
 
-    @OneToMany
+    @OneToMany(cascade = [PERSIST], mappedBy = "item")
     var bids: Set<Bid> = mutableSetOf()
 
     @NotNull
@@ -23,11 +25,11 @@ class Item {
     lateinit var name: String
 
     @Future
-    var auctionEnd: LocalDateTime
+    var auctionEnd: LocalDateTime = LocalDateTime.now()
 
     fun addBid(bid: Bid) {
         if (bid.item != null) throw IllegalStateException("Item alread added")
-        bids.plus(bid)
+        bids = bids.plus(bid)
         bid.item = this
     }
 }

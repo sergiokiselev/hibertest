@@ -27,7 +27,27 @@
             </column>
         </createTable>
 
+        <createTable tableName="BID">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ITEM_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="BID_VALUE" type="NUMERIC(14,2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
         <createSequence sequenceName="seq_messages" startValue="30"/>
+        <createSequence sequenceName="seq_items" startValue="30"/>
+        <createSequence sequenceName="seq_bids" startValue="30"/>
     </changeSet>
+    
+<!--    <changeSet id="CREATE_ITEM_BIDS_TABLE" author="SERGEY">-->
+<!--        <createTable tableName="ITEM_BIDS">-->
+<!--            <column name=""></column>-->
+<!--        </createTable>-->
+<!--    </changeSet>-->
 
 </databaseChangeLog>
