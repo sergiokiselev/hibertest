@@ -104,7 +104,7 @@ class ApiService(
                 lastName = "Test"
                 address = Address().apply {
                     city = "Minsk"
-                    zipcode = "222222"
+                    zipcode = "2222"
                     street = "Nezalezhnasci"
                 }
             }
