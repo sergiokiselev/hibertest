@@ -5,6 +5,7 @@ import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.TransactionTemplate
 import test.hiber.model.TestUser
 import test.hiber.model.bankdetails.CreditCard
+import test.hiber.model.bankdetails.CreditCard2
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 
@@ -21,6 +22,22 @@ class BillingService(
         val template = TransactionTemplate(manager)
         val creditCard = template.execute {
             val card = CreditCard().apply {
+                owner = user
+                cardNumber = "sada"
+                expMonth = "01"
+                expYear = "2001"
+            }
+            em.persist(card)
+            return@execute card
+        }
+        return creditCard
+    }
+
+    fun createDetails2(): CreditCard2 {
+        val user = apiService.createUser()
+        val template = TransactionTemplate(manager)
+        val creditCard = template.execute {
+            val card = CreditCard2().apply {
                 owner = user
                 cardNumber = "sada"
                 expMonth = "01"

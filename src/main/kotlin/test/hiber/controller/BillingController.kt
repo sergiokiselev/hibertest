@@ -13,4 +13,7 @@ class BillingController(
 
     @GetMapping("/create-billing")
     fun createDetails() = billingService.createDetails()
+
+    @GetMapping("/create-billing2")
+    fun createDetails2() = billingService.createDetails2()
 }
