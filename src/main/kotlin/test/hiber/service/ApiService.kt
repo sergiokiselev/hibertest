@@ -3,20 +3,19 @@ package test.hiber.service
 import org.springframework.stereotype.Service
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.TransactionTemplate
-import test.hiber.model.Bid
-import test.hiber.model.Item
-import test.hiber.model.Message
+import test.hiber.model.*
 import java.math.BigDecimal
+import java.util.*
 import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
 import javax.persistence.PersistenceContext
 
 @Service
 class ApiService(
-    @PersistenceContext
-    private val entityManager: EntityManager,
-    private val manager: PlatformTransactionManager,
-    private val entityManagerFactory: EntityManagerFactory
+        @PersistenceContext
+    private val em: EntityManager,
+        private val manager: PlatformTransactionManager,
+        private val entityManagerFactory: EntityManagerFactory
 ) {
 
     fun createMessage(): MutableList<Any?>? {
@@ -24,10 +23,10 @@ class ApiService(
         val list = template.execute {
             val message = Message().apply { text = "teset" }
             val message2 = Message().apply { text = "teset123" }
-            entityManager.persist(message)
-            entityManager.persist(message2)
+            em.persist(message)
+            em.persist(message2)
             println(message)
-            val find = entityManager.createQuery("select m from Message m").resultList
+            val find = em.createQuery("select m from Message m").resultList
             println(find)
             return@execute find
         }
@@ -37,12 +36,12 @@ class ApiService(
         val managedTypes = mm.managedTypes
         managedTypes.map { println(it) }
 
-        val cb = entityManager.criteriaBuilder
+        val cb = em.criteriaBuilder
         val query = cb.createQuery(Item::class.java)
         val root = query.from(Item::class.java)
         query.select(root)
 
-        val items = entityManager.createQuery(query).resultList
+        val items = em.createQuery(query).resultList
 
         println(items.size)
 
@@ -55,20 +54,24 @@ class ApiService(
             val item = Item().apply {
                 name = "testname"
                 addBid(Bid().apply { bidValue = BigDecimal.TEN })
+                buyNowPrice = MonetaryAmount(
+                    BigDecimal.valueOf(333),
+                    Currency.getInstance("USD")
+                )
             }
-            entityManager.persist(item)
+            em.persist(item)
 
-            return@execute entityManager.find(Item::class.java, item.id)
+            return@execute em.find(Item::class.java, item.id)
         }
         return item
     }
 
     fun getItems(): MutableList<Item>? {
-        val criteriaBuilder = entityManager.criteriaBuilder
+        val criteriaBuilder = em.criteriaBuilder
         val query = criteriaBuilder.createQuery(Item::class.java)
         val root = query.from(Item::class.java)
         query.select(root)
-        val resultList = entityManager.createQuery(query).resultList
+        val resultList = em.createQuery(query).resultList
 
         println(resultList)
 
@@ -76,20 +79,39 @@ class ApiService(
     }
 
     fun getSummary(): Item? {
-        val builder = entityManager.criteriaBuilder
-        val query = builder.createQuery(Item::class.java)
-        val from = query.from(Item::class.java)
+//        val builder = entityManager.criteriaBuilder
+//        val query = builder.createQuery(Item::class.java)
+//        val from = query.from(Item::class.java)
+//
+//
+//        val maxId = query.subquery(Long.javaClass)
+//        val subroot = maxId.from(Item::class.java)
+//        maxId.select(builder.max(subroot.get("id")))
+//
+//        query.where(
+//            builder.equal(from.get<Long>("id"), 1L)
+//        )
+//        val result = entityManager.createQuery(query).singleResult
+//        println(result)
+        return null
+    }
 
+    fun createUser(): TestUser {
+        val template = TransactionTemplate(manager)
+        val item = template.execute {
+            val user = TestUser().apply {
+                firstName = "Test"
+                lastName = "Test"
+                address = Address().apply {
+                    city = "Minsk"
+                    zipcode = "222222"
+                    street = "Nezalezhnasci"
+                }
+            }
+            em.persist(user)
+            return@execute user
+        }
 
-        val maxId = query.subquery(Long.javaClass)
-        val subroot = maxId.from(Item::class.java)
-        maxId.select(builder.max(subroot.get("id")))
-
-        query.where(
-            builder.equal(from.get<Long>("id"), 1L)
-        )
-        val result = entityManager.createQuery(query).singleResult
-        println(result)
-        return result
+        return item
     }
 }

@@ -44,10 +44,46 @@
         <createSequence sequenceName="seq_bids" startValue="30"/>
     </changeSet>
     
-<!--    <changeSet id="CREATE_ITEM_BIDS_TABLE" author="SERGEY">-->
-<!--        <createTable tableName="ITEM_BIDS">-->
-<!--            <column name=""></column>-->
-<!--        </createTable>-->
-<!--    </changeSet>-->
+    <changeSet id="ADD_TIME_COLUMNS" author="SERGEY">
+        <addColumn tableName="ITEM">
+            <column name="CREATED_AT" type="TIMESTAMP"/>
+            <column name="LAST_MODIFIED" type="TIMESTAMP"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="ADD_CREATED_ON" author="SERGEY">
+        <addColumn tableName="ITEM">
+            <column name="CREATED_ON" type="TIMESTAMP"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="ADD_USER_TABLE" author="SErgey">
+        <createTable tableName="TEST_USER">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="TEXT"></column>
+            <column name="last_name" type="TEXT"></column>
+            <column name="street" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="zipcode" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="ADD_PRICE_COLUMN" author="SERGEY">
+        <addColumn tableName="ITEM">
+            <column name="PRICE" type="VARCHAR"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="ADD_SERQUIENCE" author="Sergey">
+        <createSequence sequenceName="seq_users" startValue="30"/>
+    </changeSet>
 
 </databaseChangeLog>

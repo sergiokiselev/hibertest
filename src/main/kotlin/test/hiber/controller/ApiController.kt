@@ -20,4 +20,7 @@ class ApiController(
 
     @GetMapping("summary")
     fun getSummary() = apiService.getSummary()
+
+    @GetMapping("create-user")
+    fun createUser() = apiService.createUser()
 }

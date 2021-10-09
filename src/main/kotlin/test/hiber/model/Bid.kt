@@ -1,5 +1,6 @@
 package test.hiber.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import org.hibernate.annotations.Immutable
 import java.math.BigDecimal
@@ -18,6 +19,7 @@ data class Bid(
 ) {
 
     @ManyToOne(fetch = LAZY)
+    @JsonIgnore
     var item: Item? = null
 
     var bidValue: BigDecimal = ZERO
