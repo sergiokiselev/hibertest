@@ -12,11 +12,7 @@ import javax.persistence.FetchType.LAZY
 @Immutable
 @JsonIgnoreProperties(ignoreUnknown = true)
 @SequenceGenerator(name = "sequence", sequenceName = "seq_bids", allocationSize = 1)
-class Bid {
-
-    @Id
-    @GeneratedValue(generator = "sequence", strategy = GenerationType.SEQUENCE)
-    var id: Long = 0
+class Bid : BaseEntity() {
 
     @ManyToOne(fetch = LAZY)
     @JsonIgnore

@@ -2,6 +2,7 @@ package test.hiber.model
 
 import org.hibernate.annotations.Immutable
 import org.hibernate.annotations.Subselect
+import org.hibernate.annotations.Synchronize
 import javax.persistence.Entity
 import javax.persistence.Id
 

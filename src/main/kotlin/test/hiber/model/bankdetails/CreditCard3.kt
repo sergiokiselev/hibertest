@@ -1,10 +1,11 @@
 package test.hiber.model.bankdetails
 
+import javax.persistence.DiscriminatorValue
 import javax.persistence.Entity
-import javax.validation.constraints.NotNull
 
 @Entity
-class CreditCard2 : BillingDetails2() {
+@DiscriminatorValue("CC")
+class CreditCard3 : BillingDetails3() {
 
     lateinit var cardNumber: String
 

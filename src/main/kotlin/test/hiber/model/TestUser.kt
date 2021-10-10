@@ -5,10 +5,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "TEST_USER")
 @SequenceGenerator(name = "sequence", sequenceName = "seq_users", allocationSize = 1)
-class TestUser {
-    @Id
-    @GeneratedValue(generator = "sequence", strategy = GenerationType.SEQUENCE)
-    var id: Long = 0
+class TestUser : BaseEntity() {
 
     lateinit var firstName: String
     lateinit var lastName: String

@@ -9,11 +9,7 @@ import javax.persistence.GenerationType.SEQUENCE
 @SequenceGenerator(name = "sequence", sequenceName = "seq_messages", allocationSize = 1)
 @DynamicInsert
 @DynamicUpdate
-class Message {
-
-    @Id
-    @GeneratedValue(generator = "sequence", strategy = SEQUENCE)
-    var id: Long = 0
+class Message : BaseEntity() {
 
     var text: String? = null
 

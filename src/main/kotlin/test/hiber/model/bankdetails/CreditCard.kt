@@ -8,16 +8,9 @@ import javax.validation.constraints.NotNull
 @SequenceGenerator(name = "sequence", sequenceName = "seq_items", allocationSize = 1)
 class CreditCard : BillingDetails() {
 
-    @Id
-    @GeneratedValue(generator = "sequence", strategy = GenerationType.SEQUENCE)
-    var id: Long? = null
+    lateinit var cardNumber: String
 
-    @NotNull
-    var cardNumber: String? = null
+    lateinit var expMonth: String
 
-    @NotNull
-    var expMonth: String? = null
-
-    @NotNull
-    var expYear: String? = null
+    lateinit var expYear: String
 }

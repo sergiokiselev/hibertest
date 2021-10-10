@@ -16,10 +16,7 @@ import javax.validation.constraints.Size
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 @SequenceGenerator(name = "sequence", sequenceName = "seq_items", allocationSize = 1)
-class Item {
-    @Id
-    @GeneratedValue(generator = "sequence", strategy = GenerationType.SEQUENCE)
-    var id: Long = 0
+class Item : BaseEntity() {
 
     @OneToMany(cascade = [PERSIST], mappedBy = "item")
     var bids: Set<Bid> = mutableSetOf()
