@@ -58,6 +58,13 @@ class ApiService(
                     BigDecimal.valueOf(333),
                     Currency.getInstance("USD")
                 )
+                images = mutableSetOf("test", "tefefef")
+                images2 = listOf("test","test", "tefefef")
+                images3 = listOf("test","test", "tefefef")
+                images4 = TreeMap()
+                (images4 as TreeMap<String, String>).put("4", "43")
+                (images4 as TreeMap<String, String>).put("3" ,"432332")
+                (images4 as TreeMap<String, String>).put("6" , "43433")
             }
             em.persist(item)
 
