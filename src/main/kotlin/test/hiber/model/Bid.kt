@@ -16,7 +16,10 @@ class Bid : BaseEntity() {
 
     @ManyToOne(fetch = LAZY)
     @JsonIgnore
-    var item: Item? = null
+    lateinit var item: Item
 
     var bidValue: BigDecimal = ZERO
+
+//    @Column(name = "bid_position")
+//    var bidPosition: Int = 0
 }

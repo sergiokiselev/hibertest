@@ -14,18 +14,36 @@ import javax.persistence.OrderBy
 import javax.validation.constraints.Future
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
+import java.util.HashMap
+
+import javax.persistence.MapKey
+
+
+
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 @SequenceGenerator(name = "sequence", sequenceName = "seq_items", allocationSize = 1)
+@Check(constraints = "AUCTIONSTART < AUCTIONEND")
 class Item : BaseEntity() {
 
-    @OneToMany(cascade = [PERSIST], mappedBy = "item")
-    var bids: Set<Bid> = mutableSetOf()
+//    @OneToMany(cascade = [PERSIST], mappedBy = "item")
+//    var bids: Set<Bid> = mutableSetOf()
+
+    @OneToMany(mappedBy = "item", cascade = [PERSIST])
+    @OrderColumn//.(name = "BID_POSITION", nullable = false)
+    var bids2: MutableList<Bid> = mutableListOf()
+
+    @MapKey(name = "id")
+    @OneToMany(mappedBy = "item")
+    var bids3: MutableMap<Long, Bid> = HashMap()
 
     @NotNull
     @Size(min=2, max = 255, message = "Name is required")
     lateinit var name: String
+
+
+    lateinit var auctionStart: LocalDateTime
 
     @Future
     var auctionEnd: LocalDateTime = LocalDateTime.now()
@@ -77,7 +95,7 @@ class Item : BaseEntity() {
 
     fun addBid(bid: Bid) {
         if (bid.item != null) throw IllegalStateException("Item alread added")
-        bids = bids.plus(bid)
+        //bids = bids.plus(bid)
         bid.item = this
     }
 }
