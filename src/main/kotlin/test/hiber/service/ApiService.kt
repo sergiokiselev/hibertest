@@ -1,10 +1,12 @@
 package test.hiber.service
 
+import org.hibernate.Hibernate
 import org.hibernate.Session
-import org.slf4j.Logger
+import org.hibernate.jpa.internal.util.PersistenceUtilHelper.isLoaded
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionTemplate
 import test.hiber.model.*
 import java.math.BigDecimal
@@ -172,5 +174,36 @@ class ApiService(
         }
 
         return item
+    }
+
+    @Transactional
+    fun testReference() {
+        val item = createItem()
+        val ref = em.getReference(Item::class.java, checkNotNull(item).id)
+        isLoaded(ref)
+        Hibernate.initialize(ref)
+    }
+
+    fun criteriaTest() {
+        val cb = em.criteriaBuilder
+        val criteriaQuery = cb.createQuery()
+        val root = criteriaQuery.from(Item::class.java)
+        criteriaQuery.select(root).where(cb.equal(root.get<Long>("id"), 43L))
+        val firstResult = em.createQuery(criteriaQuery).firstResult
+
+        em.createQuery("select i from Item i where i.id = :id")
+                .setParameter("id", 44L)
+                .firstResult
+    }
+
+    fun test2() {
+        val cb = em.criteriaBuilder
+        val criteriaQuery = cb.createQuery()
+        val root = criteriaQuery.from(Item::class.java)
+        val parameterExpression = cb.parameter(String::class.java)
+        criteriaQuery.select(root).where(
+                cb.equal(root.get<String>("name"), parameterExpression),
+        )
+        em.createQuery(criteriaQuery).setParameter(parameterExpression, "test")
     }
 }
